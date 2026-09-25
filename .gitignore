@@ -1,0 +1,21 @@
+# Python
+*.pyc
+__pycache__/
+.venv/
+
+# Environment variables
+.env
+*.env.*
+
+# Node
+node_modules/
+
+# Vite build output
+dist/
+
+# Firebase service account credentials
+*-serviceaccount.json
+*-service-account.json
+serviceaccount*.json
+service-account*.json
+firebase-adminsdk*.json

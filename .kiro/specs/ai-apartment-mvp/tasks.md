@@ -10,18 +10,18 @@ Tech stack: React + Vite + Tailwind CSS + React Router + Axios (JavaScript) on t
 
 ## Tasks
 
-- [ ] 1. Project scaffolding and configuration
-  - [ ] 1.1 Create root `.gitignore` covering Python virtualenvs, `__pycache__`, `.env` files, `node_modules`, Vite build output (`dist/`), and Firebase credential JSON files
+- [x] 1. Project scaffolding and configuration
+  - [x] 1.1 Create root `.gitignore` covering Python virtualenvs, `__pycache__`, `.env` files, `node_modules`, Vite build output (`dist/`), and Firebase credential JSON files
     - Add entries: `*.pyc`, `__pycache__/`, `.env`, `*.env.*`, `node_modules/`, `dist/`, `*.json` (service account pattern), `.venv/`
     - _Requirements: 10.6_
 
-  - [ ] 1.2 Scaffold the `backend/` directory structure
+  - [x] 1.2 Scaffold the `backend/` directory structure
     - Create `backend/app/__init__.py`, `backend/app/routers/__init__.py`, `backend/app/models/__init__.py`, `backend/app/services/__init__.py`, `backend/app/db/__init__.py`
     - Create `backend/requirements.txt` with pinned versions: `fastapi==0.111.0`, `uvicorn[standard]==0.29.0`, `firebase-admin==6.5.0`, `pydantic[email]==2.7.1`, `python-dotenv==1.0.1`, `hypothesis==6.100.2`, `pytest==8.2.0`, `pytest-asyncio==0.23.6`, `httpx==0.27.0`
     - Create `backend/.env.example` with keys: `GOOGLE_APPLICATION_CREDENTIALS`, `FIRESTORE_PROJECT_ID`, `CORS_ALLOWED_ORIGINS`
     - _Requirements: 10.1, 10.6_
 
-  - [ ] 1.3 Scaffold the `frontend/` directory structure
+  - [x] 1.3 Scaffold the `frontend/` directory structure
     - Create `frontend/src/assets/`, `frontend/src/components/`, `frontend/src/pages/`, `frontend/src/services/`, `frontend/src/hooks/`, `frontend/src/utils/`, `frontend/src/types/`
     - Create `frontend/.env.example` with key: `VITE_API_BASE_URL=http://localhost:8000`
     - _Requirements: 11.1, 11.9_
@@ -155,7 +155,7 @@ Tech stack: React + Vite + Tailwind CSS + React Router + Axios (JavaScript) on t
     - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 7. Frontend foundation
-  - [ ] 7.1 Initialise the Vite + React project in `frontend/`
+  - [x] 7.1 Initialise the Vite + React project in `frontend/`
     - Run `npm create vite@5.2.0 frontend -- --template react` (JavaScript template, not TypeScript)
     - Install dependencies with pinned versions: `react-router-dom@6.23.1`, `axios@1.7.2`
     - Install dev dependencies: `tailwindcss@3.4.3`, `postcss@8.4.38`, `autoprefixer@10.4.19`, `fast-check@3.19.0`, `vitest@1.6.0`, `@testing-library/react@15.0.6`, `@testing-library/user-event@14.5.2`, `@vitest/ui@1.6.0`, `jsdom@24.0.0`

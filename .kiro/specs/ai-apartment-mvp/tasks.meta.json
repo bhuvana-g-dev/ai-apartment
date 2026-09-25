@@ -1,0 +1,459 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create root `.gitignore` covering Python virtualenvs, `__pycache__`, `.env` files, `node_modules`, Vite build output (`dist/`), and Firebase credential JSON files": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308214476
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308231412
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308306169
+      }
+    ],
+    "1.2 Scaffold the `backend/` directory structure": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308215715
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308232424
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308306306
+      }
+    ],
+    "1.3 Scaffold the `frontend/` directory structure": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216021
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308232590
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308306820
+      }
+    ],
+    "2.1 Create `backend/app/main.py` — FastAPI application entry point": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216142
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308316724
+      }
+    ],
+    "2.2 Add CORS middleware to `backend/app/main.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216257
+      }
+    ],
+    "2.3 Create `backend/app/db/firestore_client.py` — Firestore client initialisation": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216357
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308317299
+      }
+    ],
+    "3.1 Create `backend/app/models/tool.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216464
+      }
+    ],
+    "3.2 Create `backend/app/models/category.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216641
+      }
+    ],
+    "3.3 Create `backend/app/models/responses.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216722
+      }
+    ],
+    "4.1 Create `backend/app/db/tools_db.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216804
+      }
+    ],
+    "4.2 Create `backend/app/db/categories_db.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308216951
+      }
+    ],
+    "5.1 Create `backend/app/services/tools_service.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217053
+      }
+    ],
+    "5.2 Create `backend/app/services/categories_service.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217128
+      }
+    ],
+    "6.1 Create `backend/app/routers/categories.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217272
+      }
+    ],
+    "6.2 Create `backend/app/routers/tools.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217353
+      }
+    ],
+    "6.3 Create `backend/app/routers/search.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217431
+      }
+    ],
+    "6.5 Checkpoint — run all backend tests; all should pass": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217542
+      }
+    ],
+    "7.1 Initialise the Vite + React project in `frontend/`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217642
+      },
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308317682
+      },
+      {
+        "executionId": "bab28053-72c9-4f7f-83ae-f42f67094518",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790309229761
+      },
+      {
+        "executionId": "bab28053-72c9-4f7f-83ae-f42f67094518",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790309715006
+      }
+    ],
+    "7.2 Configure Tailwind CSS": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217736
+      }
+    ],
+    "7.3 Create `frontend/src/services/api.js` — Axios instance": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217834
+      }
+    ],
+    "7.4 Configure React Router with all routes in `frontend/src/App.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308217924
+      }
+    ],
+    "7.5 Configure Vitest in `frontend/vite.config.js`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218044
+      }
+    ],
+    "8.1 Create `frontend/src/services/toolsService.js`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218165
+      }
+    ],
+    "8.2 Create `frontend/src/services/categoriesService.js`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218241
+      }
+    ],
+    "8.3 Create `frontend/src/services/searchService.js`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218321
+      }
+    ],
+    "9.1 Create `frontend/src/hooks/useFavorites.js`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218489
+      }
+    ],
+    "9.3 Create `frontend/src/hooks/useCompareSet.js` and `frontend/src/context/CompareContext.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218569
+      }
+    ],
+    "9.5 Create `frontend/src/hooks/useFilters.js`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218644
+      }
+    ],
+    "9.6 Create `frontend/src/hooks/usePagination.js`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218795
+      }
+    ],
+    "10.1 Create `frontend/src/components/LoadingSpinner.jsx` and `frontend/src/components/ErrorMessage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218885
+      }
+    ],
+    "10.2 Create `frontend/src/components/EmptyState.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308218982
+      }
+    ],
+    "10.3 Create `frontend/src/components/PricingBadge.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219093
+      }
+    ],
+    "10.5 Create `frontend/src/components/VerifiedDateBadge.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219187
+      }
+    ],
+    "10.7 Create `frontend/src/components/FreeTierDetails.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219291
+      }
+    ],
+    "10.9 Create `frontend/src/components/CategoryCard.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219405
+      }
+    ],
+    "10.10 Create `frontend/src/components/ToolCard.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219504
+      }
+    ],
+    "10.11 Create `frontend/src/components/CompareToggleButton.jsx` and `frontend/src/components/FavoriteToggleButton.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219625
+      }
+    ],
+    "10.13 Create `frontend/src/components/FilterPanel.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219707
+      }
+    ],
+    "10.15 Create `frontend/src/components/Pagination.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219791
+      }
+    ],
+    "10.16 Create `frontend/src/components/ComparisonIndicator.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219879
+      }
+    ],
+    "10.17 Create `frontend/src/components/SearchBar.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308219987
+      }
+    ],
+    "11.1 Create `frontend/src/components/NavBar.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220096
+      }
+    ],
+    "11.2 Create `frontend/src/components/Layout.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220206
+      }
+    ],
+    "11.3 Wrap the app in `CompareContext.Provider` in `frontend/src/main.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220317
+      }
+    ],
+    "12.1 Create `frontend/src/pages/HomePage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220423
+      }
+    ],
+    "12.2 Create `frontend/src/pages/CategoryListPage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220517
+      }
+    ],
+    "12.3 Create `frontend/src/pages/CategoryDetailPage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220637
+      }
+    ],
+    "12.4 Create `frontend/src/pages/ToolDetailPage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220717
+      }
+    ],
+    "12.5 Create `frontend/src/pages/SearchResultsPage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220806
+      }
+    ],
+    "12.6 Create `frontend/src/pages/CataloguePage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308220904
+      }
+    ],
+    "12.7 Create `frontend/src/pages/ComparePage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308221039
+      }
+    ],
+    "12.8 Create `frontend/src/pages/FavoritesPage.jsx`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308221141
+      }
+    ],
+    "13. Checkpoint — full integration test": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308221233
+      }
+    ],
+    "14.1 Create `backend/scripts/seed_categories.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308221324
+      }
+    ],
+    "14.2 Create `backend/scripts/seed_tools.py`": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308221417
+      }
+    ],
+    "15. Final checkpoint — full system smoke test": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308221511
+      }
+    ],
+    "1. Project scaffolding and configuration": [
+      {
+        "executionId": "c8969c1a-e591-43ca-9755-6dc85f64a874",
+        "chatSessionId": "sess_2cc9846c-081c-4b6a-a298-8dc465eebc3b",
+        "timestamp": 1790308306937
+      }
+    ]
+  }
+}
