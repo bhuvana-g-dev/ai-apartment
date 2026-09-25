@@ -1,11 +1,14 @@
-# Python
+﻿# Python
 *.pyc
 __pycache__/
 .venv/
 
-# Environment variables
+# Environment variables — ignore actual secrets, never .env.example
 .env
-*.env.*
+.env.local
+.env.development
+.env.production
+.env.staging
 
 # Node
 node_modules/
