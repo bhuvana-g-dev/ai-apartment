@@ -1,14 +1,25 @@
 ﻿# Python
 *.pyc
+*.pyo
 __pycache__/
 .venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.hypothesis/
 
-# Environment variables — ignore actual secrets, never .env.example
+# Environment variables — never commit secrets
 .env
 .env.local
 .env.development
 .env.production
 .env.staging
+
+# Firebase / Google credentials — NEVER commit these
+*firebase-adminsdk*.json
+*service-account*.json
+*serviceaccount*.json
+*-adminsdk-*.json
 
 # Node
 node_modules/
@@ -16,9 +27,10 @@ node_modules/
 # Vite build output
 dist/
 
-# Firebase service account credentials
-*-serviceaccount.json
-*-service-account.json
-serviceaccount*.json
-service-account*.json
-firebase-adminsdk*.json
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.swp
