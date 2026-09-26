@@ -1,0 +1,24 @@
+﻿# Python
+*.pyc
+__pycache__/
+.venv/
+
+# Environment variables — ignore actual secrets, never .env.example
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+
+# Node
+node_modules/
+
+# Vite build output
+dist/
+
+# Firebase service account credentials
+*-serviceaccount.json
+*-service-account.json
+serviceaccount*.json
+service-account*.json
+firebase-adminsdk*.json

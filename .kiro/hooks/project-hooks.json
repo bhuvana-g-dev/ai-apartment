@@ -1,0 +1,31 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Python Syntax Check on Save",
+      "trigger": "PostFileSave",
+      "matcher": "\\.py$",
+      "action": {
+        "type": "command",
+        "command": "python.exe -m py_compile \"${file}\" && echo OK || echo SYNTAX ERROR in ${file}"
+      }
+    },
+    {
+      "name": "Frontend Build Check on Save",
+      "trigger": "PostFileSave",
+      "matcher": "frontend/src/.*\\.(jsx|js)$",
+      "action": {
+        "type": "agent",
+        "prompt": "A frontend source file was just saved. If the file has any obvious import errors, missing closing tags, or JSX syntax issues, point them out briefly. Do not rewrite the file."
+      }
+    },
+    {
+      "name": "Remind to Run Tests After Task",
+      "trigger": "PostTaskExec",
+      "action": {
+        "type": "agent",
+        "prompt": "A spec task was just completed. Remind the developer to run `npm.cmd test` in frontend/ and `python -m pytest backend/tests/` to verify nothing is broken before moving to the next task."
+      }
+    }
+  ]
+}

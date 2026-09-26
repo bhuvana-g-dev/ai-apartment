@@ -1,0 +1,21 @@
+{
+  "name": "ai-apartment-power",
+  "displayName": "AI Apartment",
+  "version": "1.0.0",
+  "description": "Domain knowledge and tools for building and maintaining the AI Apartment platform — an AI tool discovery, comparison, and cataloguing web application.",
+  "keywords": ["ai-tools", "fastapi", "react", "firestore", "tool-catalogue", "ai-apartment"],
+  "author": "bhuvana-g-dev",
+  "skills": [
+    {
+      "name": "seed-tool",
+      "description": "Add a new AI tool record to the seed script with all required fields"
+    },
+    {
+      "name": "add-category",
+      "description": "Add a new AI tool category to the seed script and category list"
+    }
+  ],
+  "steeringFiles": [
+    "steering/ai-apartment-context.md"
+  ]
+}
