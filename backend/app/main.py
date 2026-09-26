@@ -18,8 +18,7 @@ app = FastAPI(
 )
 
 # ---------------------------------------------------------------------------
-# CORS middleware (task 2.2 will flesh this out; placeholder registered here
-# so the middleware chain exists from the start)
+# CORS middleware
 # ---------------------------------------------------------------------------
 _cors_origins_raw = os.getenv("CORS_ALLOWED_ORIGINS", "")
 _cors_origins: list[str] = (
@@ -38,8 +37,7 @@ if _cors_origins:
     )
 
 # ---------------------------------------------------------------------------
-# Global exception handler — catches any unhandled exception and returns a
-# sanitised HTTP 500.  No stack traces, no module paths, no exception names.
+# Global exception handler
 # ---------------------------------------------------------------------------
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
@@ -59,12 +57,11 @@ async def health() -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Router stubs — actual implementations land in tasks 6.1-6.3.
-# Registered in the order search → tools → categories so that
-# /tools/search is never shadowed by /tools/{tool_id}.
+# Routers — search must be registered before tools to avoid
+# /tools/search being shadowed by /tools/{tool_id}
 # ---------------------------------------------------------------------------
 from app.routers import search, tools, categories
 
-app.include_router(search.router)   # MUST be before tools router
+app.include_router(search.router)
 app.include_router(tools.router)
 app.include_router(categories.router)
