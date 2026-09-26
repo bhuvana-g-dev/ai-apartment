@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\ELCOT\\ai-apartment\\backend",
+        "C:\\Users\\ELCOT\\ai-apartment\\frontend\\src"
+      ],
+      "env": {},
+      "disabled": false
+    }
+  }
+}
