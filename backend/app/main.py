@@ -3,14 +3,16 @@ AI Apartment API — FastAPI application entry point.
 """
 
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-# Load environment variables from .env at startup before anything else
-load_dotenv()
+# Load .env from the backend root (two levels up from this file: app/main.py → app/ → backend/)
+_env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=_env_path)
 
 app = FastAPI(
     title="AI Apartment API",
