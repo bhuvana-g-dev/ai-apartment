@@ -1,5 +1,5 @@
-from typing import Literal, Optional
-from pydantic import BaseModel, Field, HttpUrl
+from typing import Literal, Optional, Any
+from pydantic import BaseModel, Field, field_validator
 from uuid import uuid4
 
 
@@ -14,6 +14,8 @@ class FreeTierDetails(BaseModel):
     api_restrictions: Optional[str] = None
     commercial_use_allowed: Optional[bool] = None
 
+    model_config = {"extra": "ignore"}
+
 
 PRICING_TYPES = Literal["Completely Free", "Freemium", "Free Trial", "Paid Only"]
 
@@ -23,21 +25,29 @@ class ToolRecord(BaseModel):
     name: str = Field(..., min_length=1, max_length=200)
     description: str = Field(..., min_length=1, max_length=2000)
     category_id: str
-    website_url: str  # stored as string, validated as URL on write
+    website_url: str
     pricing_type: PRICING_TYPES
     free_availability: bool
     free_tier_details: Optional[FreeTierDetails] = None
-    capabilities: list[str] = Field(default_factory=list, max_length=50)
-    input_types: list[str] = Field(default_factory=list, max_length=20)
-    output_types: list[str] = Field(default_factory=list, max_length=20)
+    capabilities: list[str] = Field(default_factory=list)
+    input_types: list[str] = Field(default_factory=list)
+    output_types: list[str] = Field(default_factory=list)
     watermark_info: Optional[str] = Field(None, max_length=500)
     api_available: bool
-    best_use_cases: list[str] = Field(default_factory=list, max_length=20)
-    limitations: list[str] = Field(default_factory=list, max_length=20)
-    verified_date: str  # YYYY-MM-DD
+    best_use_cases: list[str] = Field(default_factory=list)
+    limitations: list[str] = Field(default_factory=list)
+    verified_date: str
     active: bool
 
-    model_config = {"populate_by_name": True}
+    model_config = {"populate_by_name": True, "extra": "ignore"}
+
+    @field_validator("free_tier_details", mode="before")
+    @classmethod
+    def coerce_free_tier_details(cls, v):
+        """Accept plain dict from Firestore and coerce to FreeTierDetails."""
+        if isinstance(v, dict):
+            return FreeTierDetails(**{k: val for k, val in v.items() if k in FreeTierDetails.model_fields})
+        return v
 
 
 class ToolCreate(BaseModel):

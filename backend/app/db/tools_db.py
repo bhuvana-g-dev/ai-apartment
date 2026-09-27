@@ -3,17 +3,28 @@
 from app.db.firestore_client import get_db
 
 
+def _doc_to_tool(doc) -> dict:
+    """Convert a Firestore document snapshot to a tool dict."""
+    data = doc.to_dict()
+    if data is None:
+        return None
+    return {"id": doc.id, **data}
+
+
 def fetch_tools(filters: dict | None = None, limit: int = 20, offset: int = 0) -> tuple[list[dict], int]:
-    """Fetch active tools from Firestore, return (docs, total_count)."""
+    """Fetch active tools from Firestore, return (page, total_count)."""
     db = get_db()
-    ref = db.collection("tools")
-    docs = [{"id": doc.id, **doc.to_dict()} for doc in ref.stream() if doc.to_dict().get("active", False)]
-    # Apply filters in Python (Firestore free tier doesn't support complex multi-field queries)
+    docs = []
+    for doc in db.collection("tools").stream():
+        tool = _doc_to_tool(doc)
+        if tool and tool.get("active", False):
+            docs.append(tool)
+
     if filters:
         from app.services.tools_service import apply_filters
         docs = apply_filters(docs, filters)
+
     total = len(docs)
-    # Sort alphabetically by name
     docs.sort(key=lambda d: d.get("name", "").lower())
     return docs[offset: offset + limit], total
 
@@ -24,7 +35,7 @@ def fetch_tool_by_id(tool_id: str) -> dict | None:
     doc = db.collection("tools").document(tool_id).get()
     if not doc.exists:
         return None
-    return {"id": doc.id, **doc.to_dict()}
+    return _doc_to_tool(doc)
 
 
 def write_tool(data: dict) -> str:
