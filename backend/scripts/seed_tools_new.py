@@ -266,7 +266,7 @@ NEW_TOOLS = [
         "pricing_type": "Freemium",
         "free_availability": True,
         "free_tier_details": ftd(
-            weekly="10 slow generation credits per week on free tier",
+            credits="10 slow generation credits per week on free tier",
             features="Free outputs are public; paid plans add private generation. Plus at $7/month (annual): 1,000 priority credits",
             api="API available: $0.03/image (Turbo), $0.06 (Default), $0.10 (Quality)",
             commercial=True,
