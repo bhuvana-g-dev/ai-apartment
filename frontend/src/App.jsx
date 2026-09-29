@@ -8,6 +8,8 @@ import ToolDetailPage from './pages/ToolDetailPage.jsx'
 import SearchResultsPage from './pages/SearchResultsPage.jsx'
 import ComparePage from './pages/ComparePage.jsx'
 import FavoritesPage from './pages/FavoritesPage.jsx'
+import FinderPage from './pages/FinderPage.jsx'
+import AdminPage from './pages/AdminPage.jsx'
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/finder" element={<FinderPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

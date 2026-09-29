@@ -20,26 +20,31 @@ export function useFavorites() {
   const [favorites, setFavorites] = useState(() => readFromStorage())
 
   const addFavorite = useCallback((id) => {
+    setFavorites(prev => {
+      if (prev.includes(id)) return prev
+      if (prev.length >= MAX_FAVORITES) return prev
+      const updated = [id, ...prev]
+      writeToStorage(updated)
+      return updated
+    })
     const current = readFromStorage()
     if (current.includes(id)) return { success: true }
-    if (current.length >= MAX_FAVORITES) {
-      return { success: false, reason: 'limit_reached' }
-    }
-    const updated = [id, ...current]
-    writeToStorage(updated)
-    setFavorites(updated)
+    if (current.length >= MAX_FAVORITES) return { success: false, reason: 'limit_reached' }
     return { success: true }
   }, [])
 
   const removeFavorite = useCallback((id) => {
-    const updated = readFromStorage().filter(fid => fid !== id)
-    writeToStorage(updated)
-    setFavorites(updated)
+    setFavorites(prev => {
+      const updated = prev.filter(fid => fid !== id)
+      writeToStorage(updated)
+      return updated
+    })
   }, [])
 
+  // Uses state — no localStorage read on every call
   const isFavorite = useCallback((id) => {
-    return readFromStorage().includes(id)
-  }, [])
+    return favorites.includes(id)
+  }, [favorites])
 
   const clearFavorites = useCallback(() => {
     writeToStorage([])

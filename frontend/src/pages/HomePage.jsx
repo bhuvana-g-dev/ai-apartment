@@ -6,7 +6,7 @@ import ToolCard from '../components/ToolCard.jsx'
 import SearchBar from '../components/SearchBar.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -67,6 +67,21 @@ export default function HomePage() {
                 {categories.map(cat => <CategoryCard key={cat.id} category={cat} />)}
               </div>
             )}
+          </section>
+
+          {/* Finder CTA */}
+          <section className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-2xl p-6 text-center space-y-3">
+            <div className="text-3xl">🔍</div>
+            <h2 className="text-lg font-bold text-gray-900">Not sure which tool to use?</h2>
+            <p className="text-gray-500 text-sm max-w-sm mx-auto">
+              Describe your task in plain English and we'll recommend the right AI tools with reasoning.
+            </p>
+            <Link
+              to="/finder"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors"
+            >
+              Try the AI Finder →
+            </Link>
           </section>
 
           {/* Featured tools */}

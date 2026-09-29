@@ -6,8 +6,12 @@ export async function getCategories() {
 }
 
 export async function getCategoryBySlug(slug) {
-  const response = await api.get('/categories')
-  const all = response.data
-  const found = all.data?.find(c => c.slug === slug) || all.find?.(c => c.slug === slug)
-  return found || null
+  try {
+    // Backend now has GET /categories/{id} — slug == id for our data
+    const response = await api.get(`/categories/${slug}`)
+    return response.data
+  } catch (e) {
+    if (e.response?.status === 404) return null
+    throw e
+  }
 }
