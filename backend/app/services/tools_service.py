@@ -52,29 +52,77 @@ def paginate(items: list, limit: int, offset: int) -> tuple[list, int]:
     return items[offset: offset + limit], total
 
 
+# Simple synonym map — expand as needed
+_SYNONYMS: dict[str, list[str]] = {
+    "video": ["video", "film", "clip", "animation", "movie"],
+    "image": ["image", "photo", "picture", "illustration", "art"],
+    "music": ["music", "audio", "song", "melody", "track", "sound"],
+    "write": ["write", "writing", "text", "content", "blog", "copy"],
+    "code": ["code", "coding", "programming", "developer", "software"],
+    "voice": ["voice", "speech", "tts", "speak", "narration", "audio"],
+    "chat": ["chat", "conversation", "assistant", "dialogue", "talk"],
+    "translate": ["translate", "translation", "language", "multilingual"],
+    "search": ["search", "research", "find", "discover", "explore"],
+    "design": ["design", "ui", "ux", "graphic", "visual", "logo"],
+    "free": ["free", "freemium", "open-source", "open source"],
+    "document": ["document", "pdf", "doc", "file", "paper"],
+    "agent": ["agent", "autonomous", "automation", "workflow"],
+}
+
+
+def _expand_terms(word: str) -> list[str]:
+    """Return the word plus any synonyms."""
+    word = word.lower()
+    return _SYNONYMS.get(word, [word])
+
+
 def rank_search_results(tools: list[dict], query: str) -> list[dict]:
-    """Case-insensitive search across key fields, ranked by relevance. Max 50 results."""
-    q = query.lower().strip()
-    if not q:
+    """
+    Word-level case-insensitive search with synonym expansion.
+    Multi-word queries work: each word is matched independently.
+    Max 50 results ordered by relevance score.
+    """
+    raw_words = query.lower().strip().split()
+    if not raw_words:
         return []
+
+    # Expand each word with synonyms
+    term_groups: list[list[str]] = [_expand_terms(w) for w in raw_words]
+
+    def field_contains_any(field_val: str, terms: list[str]) -> bool:
+        fv = field_val.lower()
+        return any(t in fv for t in terms)
+
+    def list_contains_any(items: list[str], terms: list[str]) -> bool:
+        return any(field_contains_any(item, terms) for item in items)
 
     scored: list[tuple[int, dict]] = []
     for tool in tools:
         if not tool.get("active", False):
             continue
         score = 0
-        if q in tool.get("name", "").lower():
-            score += 100
-        caps = tool.get("capabilities", [])
-        if any(q in c.lower() for c in caps):
-            score += 50
-        use_cases = tool.get("best_use_cases", [])
-        if any(q in u.lower() for u in use_cases):
-            score += 30
-        if q in tool.get("description", "").lower():
-            score += 10
-        if q in tool.get("category_id", "").lower():
-            score += 5
+        for terms in term_groups:
+            # Name match — highest weight
+            if field_contains_any(tool.get("name", ""), terms):
+                score += 100
+            # Capabilities match
+            if list_contains_any(tool.get("capabilities", []), terms):
+                score += 50
+            # Best use cases match
+            if list_contains_any(tool.get("best_use_cases", []), terms):
+                score += 40
+            # Category match
+            if field_contains_any(tool.get("category_id", ""), terms):
+                score += 30
+            # Description match
+            if field_contains_any(tool.get("description", ""), terms):
+                score += 10
+            # Input/output types
+            if list_contains_any(tool.get("input_types", []), terms):
+                score += 5
+            if list_contains_any(tool.get("output_types", []), terms):
+                score += 5
+
         if score > 0:
             scored.append((score, tool))
 

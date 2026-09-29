@@ -17,6 +17,15 @@ async def list_categories():
     return PaginatedResponse(data=cats, total=len(cats), limit=len(cats), offset=0)
 
 
+@router.get("/{category_id}", response_model=CategoryRecord)
+async def get_category(category_id: str):
+    """Return a single category by its ID/slug."""
+    cat = fetch_category_by_id(category_id)
+    if not cat:
+        raise HTTPException(status_code=404, detail=f"Category '{category_id}' not found")
+    return cat
+
+
 @router.get("/{category_id}/tools", response_model=PaginatedResponse[ToolRecord])
 async def get_tools_for_category(category_id: str):
     """Return all active tools for a given category, sorted alphabetically."""

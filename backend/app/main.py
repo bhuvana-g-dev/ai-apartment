@@ -20,23 +20,24 @@ app = FastAPI(
 )
 
 # ---------------------------------------------------------------------------
-# CORS middleware
+# CORS middleware — always enabled.
+# In production set CORS_ALLOWED_ORIGINS to a comma-separated list of origins.
+# When the env var is empty (local dev) we allow all origins so a fresh clone works.
 # ---------------------------------------------------------------------------
 _cors_origins_raw = os.getenv("CORS_ALLOWED_ORIGINS", "")
 _cors_origins: list[str] = (
-    [origin.strip() for origin in _cors_origins_raw.split(",") if origin.strip()]
-    if _cors_origins_raw
-    else []
+    [o.strip() for o in _cors_origins_raw.split(",") if o.strip()]
+    if _cors_origins_raw.strip()
+    else ["*"]
 )
 
-if _cors_origins:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=_cors_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins,
+    allow_credentials=_cors_origins != ["*"],  # credentials not allowed with wildcard
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ---------------------------------------------------------------------------
 # Global exception handler
@@ -62,8 +63,9 @@ async def health() -> dict:
 # Routers — search must be registered before tools to avoid
 # /tools/search being shadowed by /tools/{tool_id}
 # ---------------------------------------------------------------------------
-from app.routers import search, tools, categories
+from app.routers import search, tools, categories, finder
 
 app.include_router(search.router)
+app.include_router(finder.router)   # before tools to avoid path conflicts
 app.include_router(tools.router)
 app.include_router(categories.router)

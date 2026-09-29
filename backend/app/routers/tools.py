@@ -1,13 +1,28 @@
 """Router: /tools"""
 
+import os
 from typing import Optional, Literal
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends, Security
+from fastapi.security.api_key import APIKeyHeader
 from app.db.tools_db import fetch_tools, fetch_tool_by_id, write_tool, update_tool
 from app.models.tool import ToolRecord, ToolCreate, ToolUpdate, PRICING_TYPES
 from app.models.responses import PaginatedResponse
 from uuid import uuid4
 
 router = APIRouter(prefix="/tools", tags=["tools"])
+
+_API_KEY_NAME = "X-Admin-Key"
+_api_key_header = APIKeyHeader(name=_API_KEY_NAME, auto_error=False)
+
+
+def _require_admin(key: str | None = Security(_api_key_header)):
+    """Dependency that validates the admin API key."""
+    expected = os.getenv("ADMIN_API_KEY", "")
+    if not expected:
+        # No key configured — allow in dev (log a warning)
+        return
+    if key != expected:
+        raise HTTPException(status_code=401, detail="Invalid or missing admin API key")
 
 VALID_PRICING_TYPES = {"Completely Free", "Freemium", "Free Trial", "Paid Only"}
 
@@ -54,7 +69,7 @@ async def get_tool(tool_id: str):
     return tool
 
 
-@router.post("", response_model=ToolRecord, status_code=201)
+@router.post("", response_model=ToolRecord, status_code=201, dependencies=[Depends(_require_admin)])
 async def create_tool(body: ToolCreate):
     tool_id = str(uuid4())
     data = body.model_dump()
@@ -63,7 +78,7 @@ async def create_tool(body: ToolCreate):
     return {**data, "id": tool_id}
 
 
-@router.patch("/{tool_id}", response_model=ToolRecord)
+@router.patch("/{tool_id}", response_model=ToolRecord, dependencies=[Depends(_require_admin)])
 async def patch_tool(tool_id: str, body: ToolUpdate):
     existing = fetch_tool_by_id(tool_id)
     if not existing:
