@@ -14,6 +14,7 @@ const CATEGORY_ICONS = {
   'document-ai': '📄',
   'translation-ai': '🌐',
   'ai-agents': '🤖',
+  'ai-api-providers': '⚙️',
 }
 
 export default function CategoryCard({ category }) {

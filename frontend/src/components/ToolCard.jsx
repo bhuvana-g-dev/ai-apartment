@@ -19,6 +19,7 @@ const CATEGORY_ICONS = {
   'document-ai': '📄',
   'translation-ai': '🌐',
   'ai-agents': '🤖',
+  'ai-api-providers': '⚙️',
 }
 
 export default function ToolCard({ tool, showCompare = true, showFavorite = true }) {
