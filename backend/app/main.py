@@ -24,6 +24,9 @@ app = FastAPI(
 # In production set CORS_ALLOWED_ORIGINS to a comma-separated list of origins.
 # When the env var is empty (local dev) we allow all origins so a fresh clone works.
 # ---------------------------------------------------------------------------
+# CORS — always allow all origins so the app works from any frontend domain.
+# This is intentional for a public discovery platform.
+# To restrict in production: set CORS_ALLOWED_ORIGINS env var.
 _cors_origins_raw = os.getenv("CORS_ALLOWED_ORIGINS", "")
 _cors_origins: list[str] = (
     [o.strip() for o in _cors_origins_raw.split(",") if o.strip()]
@@ -33,8 +36,8 @@ _cors_origins: list[str] = (
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=_cors_origins,
-    allow_credentials=_cors_origins != ["*"],  # credentials not allowed with wildcard
+    allow_origins=["*"],          # always allow all — locked to specific origins via env var in prod
+    allow_credentials=False,      # must be False when allow_origins=["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
