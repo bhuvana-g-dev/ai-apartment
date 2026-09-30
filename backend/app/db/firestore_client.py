@@ -1,66 +1,64 @@
 """
 Firestore client initialisation.
 
-Reads credentials and project ID from environment variables, initialises the
-firebase_admin app exactly once, and exposes get_db() for use by the DB layer.
+Supports two credential modes:
+1. GOOGLE_APPLICATION_CREDENTIALS — path to a service account JSON file (local dev)
+2. FIREBASE_SERVICE_ACCOUNT_JSON  — the full JSON string (production / Render / cloud)
 
-Required environment variables:
-    GOOGLE_APPLICATION_CREDENTIALS  — path to a Firebase service-account JSON file
-    FIRESTORE_PROJECT_ID            — the Google Cloud project ID
+FIRESTORE_PROJECT_ID is required in both cases.
 """
 
 import os
-
+import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# Lazily-cached Firestore client; populated on first call to get_db().
 _db = None
 
 
 def _init_firebase() -> None:
-    """Initialise the firebase_admin app once.
+    if firebase_admin._apps:
+        return  # already initialised
 
-    Raises:
-        EnvironmentError: if either required environment variable is missing.
-        FileNotFoundError: if the credentials file path does not exist.
-    """
-    cred_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-    project_id = os.environ.get("FIRESTORE_PROJECT_ID")
-
-    missing = [
-        name
-        for name, value in [
-            ("GOOGLE_APPLICATION_CREDENTIALS", cred_path),
-            ("FIRESTORE_PROJECT_ID", project_id),
-        ]
-        if not value
-    ]
-    if missing:
+    project_id = os.environ.get("FIRESTORE_PROJECT_ID", "").strip()
+    if not project_id:
         raise EnvironmentError(
-            f"Missing required environment variable(s): {', '.join(missing)}. "
-            "Ensure they are set before starting the application."
+            "FIRESTORE_PROJECT_ID environment variable is required but not set."
         )
 
-    if not os.path.isfile(cred_path):
-        raise FileNotFoundError(
-            f"Firebase credentials file not found at '{cred_path}'. "
-            "Check the value of GOOGLE_APPLICATION_CREDENTIALS."
-        )
+    # Mode 1 — JSON string (production: Render, Railway, etc.)
+    sa_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON", "").strip()
+    if sa_json:
+        try:
+            sa_dict = json.loads(sa_json)
+        except json.JSONDecodeError as e:
+            raise ValueError(
+                f"FIREBASE_SERVICE_ACCOUNT_JSON is not valid JSON: {e}"
+            )
+        cred = credentials.Certificate(sa_dict)
+        firebase_admin.initialize_app(cred, {"projectId": project_id})
+        return
 
-    # firebase_admin raises ValueError if the default app is already initialised;
-    # check first so that this function is safe to call multiple times (e.g. in tests).
-    if not firebase_admin._apps:
+    # Mode 2 — file path (local dev)
+    cred_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "").strip()
+    if cred_path:
+        if not os.path.isfile(cred_path):
+            raise FileNotFoundError(
+                f"Firebase credentials file not found at '{cred_path}'. "
+                "Check GOOGLE_APPLICATION_CREDENTIALS."
+            )
         cred = credentials.Certificate(cred_path)
         firebase_admin.initialize_app(cred, {"projectId": project_id})
+        return
+
+    raise EnvironmentError(
+        "No Firebase credentials found. Set either:\n"
+        "  FIREBASE_SERVICE_ACCOUNT_JSON — full service account JSON string (production)\n"
+        "  GOOGLE_APPLICATION_CREDENTIALS — path to service account JSON file (local dev)"
+    )
 
 
 def get_db():
-    """Return the Firestore client, initialising firebase_admin on the first call.
-
-    Returns:
-        google.cloud.firestore.Client: the Firestore client instance.
-    """
     global _db
     if _db is None:
         _init_firebase()
