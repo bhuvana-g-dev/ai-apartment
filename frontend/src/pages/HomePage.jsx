@@ -62,9 +62,20 @@ export default function HomePage() {
 
       {/* ── HERO ── */}
       <section className="text-center pt-12 pb-4 space-y-6">
-        {/* A² logo mark */}
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-200 mx-auto">
-          <span className="text-white font-black text-3xl tracking-tight leading-none">A²</span>
+        {/* Logo */}
+        <div className="mx-auto">
+          <img
+            src="/logo.png"
+            alt="AI Apartment"
+            className="w-24 h-24 rounded-2xl object-cover shadow-xl shadow-amber-200/50 mx-auto"
+            onError={e => {
+              e.target.style.display = 'none'
+              e.target.nextSibling.style.display = 'flex'
+            }}
+          />
+          <div style={{ display: 'none' }} className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-200 mx-auto">
+            <span className="text-white font-black text-4xl tracking-tight leading-none">A²</span>
+          </div>
         </div>
 
         <div className="space-y-2">
