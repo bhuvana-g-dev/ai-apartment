@@ -83,6 +83,7 @@ export default function CataloguePage() {
             options={{ categories }}
             onChange={handleFilterChange}
             onClear={handleClear}
+            activeCount={Object.entries(filters).filter(([k, v]) => !['offset','limit'].includes(k) && v).length}
           />
         </div>
 

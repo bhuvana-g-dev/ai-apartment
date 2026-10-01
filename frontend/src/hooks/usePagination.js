@@ -13,6 +13,7 @@ export function usePagination(total = 0, limit = 20) {
 
   const nextPage = useCallback(() => goToPage(currentPage + 1), [goToPage, currentPage])
   const prevPage = useCallback(() => goToPage(currentPage - 1), [goToPage, currentPage])
+  const reset = useCallback(() => setOffset(0), [])
 
-  return { offset, currentPage, totalPages, goToPage, nextPage, prevPage }
+  return { offset, currentPage, totalPages, goToPage, nextPage, prevPage, reset }
 }

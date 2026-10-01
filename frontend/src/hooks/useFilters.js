@@ -1,14 +1,24 @@
 import { useSearchParams } from 'react-router-dom'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
+
+// Keys that are pagination/routing params, not real filters
+const NON_FILTER_KEYS = new Set(['offset', 'limit', 'q'])
 
 export function useFilters() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const filters = Object.fromEntries(searchParams.entries())
+  const filters = useMemo(() => Object.fromEntries(searchParams.entries()), [searchParams])
+
+  const activeCount = useMemo(() =>
+    Object.entries(filters).filter(([k, v]) => !NON_FILTER_KEYS.has(k) && v !== '' && v != null).length,
+  [filters])
+
+  const hasFilters = activeCount > 0
 
   const setFilter = useCallback((key, value) => {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev)
+      next.delete('offset') // always reset pagination on filter change
       if (value === null || value === undefined || value === '') {
         next.delete(key)
       } else {
@@ -22,5 +32,5 @@ export function useFilters() {
     setSearchParams({})
   }, [setSearchParams])
 
-  return { filters, setFilter, clearFilters }
+  return { filters, setFilter, clearFilters, activeCount, hasFilters }
 }

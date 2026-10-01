@@ -6,31 +6,29 @@ const MAX_FAVORITES = 500
 function readFromStorage() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    return []
-  }
+    const parsed = raw ? JSON.parse(raw) : []
+    return Array.isArray(parsed) ? parsed.filter(x => typeof x === 'string') : []
+  } catch { return [] }
 }
 
 function writeToStorage(ids) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(ids))
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(ids)) } catch { /* quota exceeded */ }
 }
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState(() => readFromStorage())
 
   const addFavorite = useCallback((id) => {
+    let result = { success: false, reason: 'unknown' }
     setFavorites(prev => {
-      if (prev.includes(id)) return prev
-      if (prev.length >= MAX_FAVORITES) return prev
+      if (prev.includes(id)) { result = { success: true }; return prev }
+      if (prev.length >= MAX_FAVORITES) { result = { success: false, reason: 'limit_reached' }; return prev }
       const updated = [id, ...prev]
       writeToStorage(updated)
+      result = { success: true }
       return updated
     })
-    const current = readFromStorage()
-    if (current.includes(id)) return { success: true }
-    if (current.length >= MAX_FAVORITES) return { success: false, reason: 'limit_reached' }
-    return { success: true }
+    return result
   }, [])
 
   const removeFavorite = useCallback((id) => {
@@ -41,10 +39,7 @@ export function useFavorites() {
     })
   }, [])
 
-  // Uses state — no localStorage read on every call
-  const isFavorite = useCallback((id) => {
-    return favorites.includes(id)
-  }, [favorites])
+  const isFavorite = useCallback((id) => favorites.includes(id), [favorites])
 
   const clearFavorites = useCallback(() => {
     writeToStorage([])
