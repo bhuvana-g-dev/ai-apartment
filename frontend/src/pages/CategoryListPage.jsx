@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getCategories } from '../services/categoriesService.js'
 import CategoryCard from '../components/CategoryCard.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
@@ -26,7 +27,15 @@ export default function CategoryListPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">AI Categories</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">AI Rooms</h1>
+          <p className="text-sm text-gray-400 mt-0.5">Browse all {categories.length} AI capability categories</p>
+        </div>
+        <Link to="/finder" className="flex items-center gap-1.5 px-3 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm hover:bg-indigo-100 transition-colors">
+          🔍 Not sure? Try Finder
+        </Link>
+      </div>
       {loading && <LoadingSpinner />}
       {error && <ErrorMessage message={error} onRetry={load} />}
       {!loading && !error && categories.length === 0 && (

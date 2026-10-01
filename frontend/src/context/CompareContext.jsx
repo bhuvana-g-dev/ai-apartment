@@ -6,7 +6,12 @@ const STORAGE_KEY = 'ai_apartment_compare'
 function readStorage() {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
+    const parsed = raw ? JSON.parse(raw) : []
+    // Validate — must be array of strings
+    if (Array.isArray(parsed) && parsed.every(x => typeof x === 'string')) {
+      return parsed.slice(0, MAX_COMPARE)
+    }
+    return []
   } catch {
     return []
   }
