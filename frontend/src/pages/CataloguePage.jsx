@@ -8,6 +8,7 @@ import Pagination from '../components/Pagination.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import BackButton from '../components/BackButton.jsx'
 
 const LIMIT = 20
 
@@ -73,6 +74,7 @@ export default function CataloguePage() {
 
   return (
     <div className="space-y-4">
+      <BackButton fallback="/" label="Home" />
       <h1 className="text-2xl font-bold text-gray-900">All AI Tools</h1>
 
       <div className="flex gap-6 items-start">

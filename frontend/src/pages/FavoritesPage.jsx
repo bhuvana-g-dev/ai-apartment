@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import ToolCard from '../components/ToolCard.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import BackButton from '../components/BackButton.jsx'
 
 export default function FavoritesPage() {
   const { favorites, removeFavorite, clearFavorites } = useFavorites()
@@ -36,6 +37,9 @@ export default function FavoritesPage() {
   if (favorites.length === 0) {
     return (
       <div className="space-y-6 max-w-2xl mx-auto text-center py-12">
+        <div className="flex justify-start">
+          <BackButton fallback="/" label="Home" />
+        </div>
         <div className="text-5xl">🤍</div>
         <h1 className="text-2xl font-bold text-gray-900">No favorites yet</h1>
         <p className="text-gray-400 text-sm">
@@ -58,6 +62,8 @@ export default function FavoritesPage() {
 
   return (
     <div className="space-y-6">
+      <BackButton fallback="/" label="Home" />
+
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>

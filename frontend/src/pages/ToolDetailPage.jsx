@@ -9,6 +9,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import { useCompare } from '../context/CompareContext.jsx'
 import { useFavorites } from '../hooks/useFavorites.js'
+import BackButton from '../components/BackButton.jsx'
 
 const CATEGORY_ICONS = {
   'chat-ai':'💬','writing-ai':'✍️','research-ai':'🔬','image-generation':'🎨',
@@ -113,6 +114,9 @@ export default function ToolDetailPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-5 pb-12">
+
+      {/* Back navigation */}
+      <BackButton fallback="/tools" label="Back to tools" />
 
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-gray-400">

@@ -6,6 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import SearchBar from '../components/SearchBar.jsx'
+import BackButton from '../components/BackButton.jsx'
 
 export default function SearchResultsPage() {
   const [searchParams] = useSearchParams()
@@ -33,6 +34,8 @@ export default function SearchResultsPage() {
 
   return (
     <div className="space-y-5">
+      <BackButton fallback="/" label="Home" />
+
       {/* Search bar */}
       <div className="max-w-xl">
         <SearchBar onSubmit={handleSearch} initialValue={q} />

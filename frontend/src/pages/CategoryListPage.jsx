@@ -5,6 +5,7 @@ import CategoryCard from '../components/CategoryCard.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import BackButton from '../components/BackButton.jsx'
 
 export default function CategoryListPage() {
   const [categories, setCategories] = useState([])
@@ -27,6 +28,7 @@ export default function CategoryListPage() {
 
   return (
     <div className="space-y-6">
+      <BackButton fallback="/" label="Home" />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">AI Rooms</h1>

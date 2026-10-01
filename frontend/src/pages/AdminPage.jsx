@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import PricingBadge from '../components/PricingBadge.jsx'
+import BackButton from '../components/BackButton.jsx'
 
 const PRICING_TYPES = ['Completely Free', 'Freemium', 'Free Trial', 'Paid Only']
 
@@ -299,6 +300,8 @@ export default function AdminPage() {
 
   return (
     <div className="space-y-6">
+      <BackButton fallback="/" label="Home" />
+
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>

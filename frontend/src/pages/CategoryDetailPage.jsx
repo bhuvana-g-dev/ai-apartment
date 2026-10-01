@@ -6,6 +6,7 @@ import ToolCard from '../components/ToolCard.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import BackButton from '../components/BackButton.jsx'
 
 const CATEGORY_ICONS = {
   'chat-ai':'💬','writing-ai':'✍️','research-ai':'🔬','image-generation':'🎨',
@@ -58,6 +59,8 @@ export default function CategoryDetailPage() {
           {/* Header */}
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-xs text-gray-400 mb-3">
+              <BackButton fallback="/categories" label="All Categories" />
+              <span className="text-gray-300">·</span>
               <Link to="/" className="hover:text-indigo-600">Home</Link>
               <span>/</span>
               <Link to="/categories" className="hover:text-indigo-600">Categories</Link>

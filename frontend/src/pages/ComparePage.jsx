@@ -5,6 +5,7 @@ import { useCompare } from '../context/CompareContext.jsx'
 import PricingBadge from '../components/PricingBadge.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import EmptyState from '../components/EmptyState.jsx'
+import BackButton from '../components/BackButton.jsx'
 
 const CATEGORY_ICONS = {
   'chat-ai':'💬','writing-ai':'✍️','research-ai':'🔬','image-generation':'🎨',
@@ -117,23 +118,26 @@ export default function ComparePage() {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Compare Tools</h1>
-          <p className="text-xs text-gray-400 mt-0.5">
-            Factual comparison only — no tool is declared best.
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link to="/tools" className="text-sm text-gray-400 hover:text-indigo-600 transition-colors">
-            + Add more
-          </Link>
-          <button
-            onClick={() => { clearCompare(); navigate('/tools') }}
-            className="text-sm text-gray-400 hover:text-red-500 transition-colors"
-          >
-            Clear all
-          </button>
+      <div className="space-y-3">
+        <BackButton fallback="/tools" label="Back to tools" />
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Compare Tools</h1>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Factual comparison only — no tool is declared best.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link to="/tools" className="text-sm text-gray-400 hover:text-indigo-600 transition-colors">
+              + Add more
+            </Link>
+            <button
+              onClick={() => { clearCompare(); navigate('/tools') }}
+              className="text-sm text-gray-400 hover:text-red-500 transition-colors"
+            >
+              Clear all
+            </button>
+          </div>
         </div>
       </div>
 
