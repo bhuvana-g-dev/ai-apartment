@@ -8,7 +8,7 @@ const BADGE_STYLES = {
 export default function PricingBadge({ pricingType }) {
   const style = BADGE_STYLES[pricingType] || 'bg-gray-100 text-gray-700 border-gray-200'
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium border ${style}`}>
+    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium border transition-all hover:scale-105 ${style}`}>
       {pricingType}
     </span>
   )

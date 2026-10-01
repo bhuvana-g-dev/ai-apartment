@@ -81,7 +81,7 @@ export default function HomePage() {
           </div>
 
           <div>
-            <h1 className="text-5xl sm:text-7xl font-black text-gray-900 tracking-tight leading-none">
+            <h1 className="text-5xl sm:text-7xl font-black text-gray-900 tracking-tight leading-none animate-fade-down">
               AI Apartment
             </h1>
             <p className="text-lg sm:text-xl text-indigo-600 font-semibold mt-3">
@@ -103,7 +103,7 @@ export default function HomePage() {
         </div>
 
         {/* Trust signals */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-400">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-400 animate-fade-up" style={{animationDelay:'0.25s'}}>
           <span className="flex items-center gap-1.5"><Shield size={12} className="text-green-500" /> Honest free-tier limits</span>
           <span className="flex items-center gap-1.5"><BarChart3 size={12} className="text-indigo-500" /> Verified pricing dates</span>
           <span className="flex items-center gap-1.5"><GitCompare size={12} className="text-purple-500" /> Side-by-side compare</span>
@@ -115,7 +115,7 @@ export default function HomePage() {
       <section>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">What do you want to do?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 animate-fade-up">What do you want to do?</h2>
             <p className="text-sm text-gray-400 mt-1">Jump straight to the tools you need</p>
           </div>
           <Link to="/finder" className="flex items-center gap-1.5 text-sm text-indigo-600 hover:underline whitespace-nowrap">
@@ -124,11 +124,12 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {TASK_OPTIONS.map(({ label, icon: Icon, to, color }) => (
+          {TASK_OPTIONS.map(({ label, icon: Icon, to, color }, idx) => (
             <Link
               key={to}
               to={to}
-              className={`flex items-center gap-3 p-4 rounded-xl border bg-white transition-all hover:shadow-sm hover:-translate-y-0.5 ${color}`}
+              style={{ animationDelay: `${idx * 0.05}s` }}
+              className={`flex items-center gap-3 p-4 rounded-xl border bg-white transition-all hover:shadow-sm hover:-translate-y-0.5 animate-slide-up ${color}`}
             >
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${color.split(' ').slice(1).join(' ')}`}>
                 <Icon size={18} />
@@ -162,7 +163,7 @@ export default function HomePage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
-            {categories.map(cat => <CategoryCard key={cat.id} category={cat} />)}
+            {categories.map((cat, i) => <CategoryCard key={cat.id} category={cat} index={i} />)}
           </div>
         )}
       </section>
@@ -181,7 +182,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {tools.map(tool => <ToolCard key={tool.id} tool={tool} />)}
+            {tools.map((tool, i) => <ToolCard key={tool.id} tool={{ ...tool, _index: i }} />)}
           </div>
         </section>
       )}
@@ -193,7 +194,7 @@ export default function HomePage() {
             <GitCompare size={14} />
             Side-by-side comparison
           </div>
-          <h2 className="text-3xl font-bold">Compare before you choose</h2>
+          <h2 className="text-3xl font-bold animate-fade-up">Compare before you choose</h2>
           <p className="text-gray-300 leading-relaxed">
             Stack up to 4 AI tools side by side — pricing, free tiers, capabilities, watermarks, API availability. Factual data, no winner declared.
           </p>

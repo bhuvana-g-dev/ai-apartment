@@ -11,6 +11,7 @@ export default function ToolCard({ tool, showCompare = true, showFavorite = true
   const inCompare = isInCompare(tool.id)
   const compareDisabled = compareSet.length >= 4
   const favd = isFavorite(tool.id)
+  const staggerClass = tool._index !== undefined ? `stagger-${Math.min((tool._index || 0) + 1, 8)}` : ''
 
   function handleCompareToggle(e) {
     e.preventDefault()
@@ -25,7 +26,7 @@ export default function ToolCard({ tool, showCompare = true, showFavorite = true
   }
 
   return (
-    <div className="bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col hover:shadow-md hover:border-indigo-200 transition-all group">
+    <div className={`bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col hover:shadow-md hover:border-indigo-200 transition-all group hover-lift animate-slide-up ${staggerClass || ''}`}>
       {/* Card header */}
       <div className="p-4 pb-3 flex items-start gap-3">
         {/* Category icon */}
