@@ -1,18 +1,19 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import NavBar from './NavBar.jsx'
+import Footer from './Footer.jsx'
 import { useCompare } from '../context/CompareContext.jsx'
 import ComparisonIndicator from './ComparisonIndicator.jsx'
-import { useNavigate } from 'react-router-dom'
 
 export default function Layout() {
   const { compareSet } = useCompare()
   const navigate = useNavigate()
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <NavBar />
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-6">
         <Outlet />
       </main>
+      <Footer />
       <ComparisonIndicator count={compareSet.length} onOpen={() => navigate('/compare')} />
     </div>
   )
