@@ -147,7 +147,7 @@ function FinisherResultCard({ item, rank }) {
           </a>
         )}
         <button
-          onClick={() => inCompare ? removeFromCompare(tool.id) : (compareSet.length < 4 && addToCompare(tool.id))}
+          onClick={() => inCompare ? removeFromCompare(tool.id) : (compareSet.length < 4 && addToCompare(tool.id, tool.name))}
           disabled={!inCompare && compareSet.length >= 4}
           className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors ${
             inCompare

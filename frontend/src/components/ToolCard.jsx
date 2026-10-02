@@ -16,7 +16,7 @@ export default function ToolCard({ tool, showCompare = true, showFavorite = true
   function handleCompareToggle(e) {
     e.preventDefault()
     if (inCompare) removeFromCompare(tool.id)
-    else if (!compareDisabled) addToCompare(tool.id)
+    else if (!compareDisabled) addToCompare(tool.id, tool.name)
   }
 
   function handleFavoriteToggle(e) {

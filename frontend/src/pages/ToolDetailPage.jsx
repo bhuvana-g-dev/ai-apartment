@@ -98,7 +98,7 @@ export default function ToolDetailPage() {
 
   function handleCompare() {
     if (inCompare) { removeFromCompare(tool.id); return }
-    addToCompare(tool.id)
+    addToCompare(tool.id, tool.name)
     setCompareAdded(true)
     setTimeout(() => setCompareAdded(false), 2000)
   }
