@@ -15,6 +15,7 @@ This project was built entirely spec-first. The spec lives at `.kiro/specs/ai-ap
 - `requirements.md` — 11 requirements, 90+ acceptance criteria in EARS format
 - `design.md` — full system architecture, API contract, Firestore schema, 17 correctness properties
 - `tasks.md` — 56 implementation tasks in 11 dependency waves
+- **Delivered:** 14 categories, 90+ tools, 10 pages, AI Finder with Gemini, Admin CRUD, Google Auth, mobile responsive
 
 Workflow used: **Requirements-First** (requirements → design → tasks → implementation).
 

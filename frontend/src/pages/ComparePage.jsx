@@ -6,13 +6,7 @@ import PricingBadge from '../components/PricingBadge.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import BackButton from '../components/BackButton.jsx'
-
-const CATEGORY_ICONS = {
-  'chat-ai':'💬','writing-ai':'✍️','research-ai':'🔬','image-generation':'🎨',
-  'video-generation':'🎬','voice-audio':'🎤','music-generation':'🎵','coding-ai':'💻',
-  'design-ai':'🖌️','productivity-ai':'⚡','document-ai':'📄','translation-ai':'🌐',
-  'ai-agents':'🤖','ai-api-providers':'⚙️',
-}
+import CategoryIcon from '../components/CategoryIcon.jsx'
 
 function NA() {
   return <span className="text-gray-300 text-xs">—</span>
@@ -151,7 +145,6 @@ export default function ComparePage() {
               </th>
               {compareSet.map(id => {
                 const { tool, error } = toolData[id] || {}
-                const icon = CATEGORY_ICONS[tool?.category_id] || '🤖'
                 return (
                   <th key={id} className="text-left p-4 min-w-48 align-top">
                     {error ? (
@@ -162,7 +155,7 @@ export default function ComparePage() {
                     ) : tool ? (
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-lg">{icon}</span>
+                          <CategoryIcon slug={tool.category_id} size={16} />
                           <Link to={`/tools/${tool.id}`} className="font-bold text-gray-900 hover:text-indigo-700 transition-colors text-sm leading-tight">
                             {tool.name}
                           </Link>
