@@ -45,7 +45,7 @@ export default function CategoryListPage() {
       )}
       {!loading && !error && categories.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {categories.map(cat => <CategoryCard key={cat.id} category={cat} />)}
+          {categories.map((cat, i) => <CategoryCard key={cat.id} category={cat} index={i} />)}
         </div>
       )}
     </div>
