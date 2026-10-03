@@ -1,4 +1,5 @@
 {
+  "$schema": "https://schemas.kiro.dev/power/v1.json",
   "name": "ai-apartment-power",
   "displayName": "AI Apartment",
   "version": "1.0.0",
