@@ -109,10 +109,11 @@ export default function HomePage() {
             </p>
 
             {/* Search */}
-            <div className="max-w-md">
+            <div className="max-w-lg w-full">
               <SearchBar
                 onSubmit={q => navigate(`/search?q=${encodeURIComponent(q)}`)}
                 placeholder="Search tools by name, capability, or use case..."
+                hero
               />
             </div>
 
