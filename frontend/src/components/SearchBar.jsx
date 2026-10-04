@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function SearchBar({ onSubmit, initialValue = '', placeholder = 'Search AI tools by name, capability, or use case...' }) {
+export default function SearchBar({ onSubmit, initialValue = '', placeholder = 'Search AI tools by name, capability, or use case...', dark = false }) {
   const [query, setQuery] = useState(initialValue)
   const [error, setError] = useState('')
 
@@ -28,16 +28,24 @@ export default function SearchBar({ onSubmit, initialValue = '', placeholder = '
           onChange={e => { setQuery(e.target.value); setError('') }}
           placeholder={placeholder}
           maxLength={200}
-          className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+          className={
+            dark
+              ? 'flex-1 px-5 py-3.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent bg-white/10 border border-white/20 text-white placeholder-slate-400 backdrop-blur-sm'
+              : 'flex-1 px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent'
+          }
         />
         <button
           type="submit"
-          className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors"
+          className={
+            dark
+              ? 'px-6 py-3.5 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-sm font-bold transition-colors shadow-lg shadow-indigo-900/30'
+              : 'px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors'
+          }
         >
           Search
         </button>
       </div>
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      {error && <p className={`mt-1 text-xs ${dark ? 'text-red-300' : 'text-red-500'}`}>{error}</p>}
     </form>
   )
 }

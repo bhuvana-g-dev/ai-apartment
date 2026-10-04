@@ -8,6 +8,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 
 # Load .env from the backend root (two levels up from this file: app/main.py → app/ → backend/)
@@ -18,6 +19,10 @@ app = FastAPI(
     title="AI Apartment API",
     version="0.1.0",
 )
+
+# Compress responses larger than 1 KB — meaningfully reduces JSON transfer size
+# for tool list and search endpoints.
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # ---------------------------------------------------------------------------
 # CORS middleware — always enabled.
@@ -60,6 +65,32 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
 async def health() -> dict:
     """Returns a simple liveness check."""
     return {"status": "ok"}
+
+
+# ---------------------------------------------------------------------------
+# Cache-Control middleware — adds short-lived browser/CDN caching for GET
+# responses so repeated navigations skip the network entirely.
+# ---------------------------------------------------------------------------
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class CacheControlMiddleware(BaseHTTPMiddleware):
+    """
+    Adds Cache-Control headers to successful GET responses:
+    - /categories and /tools list endpoints: 60 s public cache (matches TTL cache)
+    - All other GETs: 10 s stale-while-revalidate
+    - Non-GET and non-2xx: no caching
+    """
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        if request.method == "GET" and 200 <= response.status_code < 300:
+            path = request.url.path
+            if path in ("/categories", "/tools") or path.endswith("/tools"):
+                response.headers["Cache-Control"] = "public, max-age=60, stale-while-revalidate=30"
+            else:
+                response.headers["Cache-Control"] = "public, max-age=10, stale-while-revalidate=20"
+        return response
+
+app.add_middleware(CacheControlMiddleware)
 
 
 # ---------------------------------------------------------------------------

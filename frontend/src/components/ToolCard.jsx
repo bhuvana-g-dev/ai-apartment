@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import PricingBadge from './PricingBadge.jsx'
 import { useCompare } from '../context/CompareContext.jsx'
@@ -39,7 +40,8 @@ const ICON_BG = {
   'ai-api-providers': 'bg-emerald-50 text-emerald-600',
 }
 
-export default function ToolCard({ tool, showCompare = true, showFavorite = true }) {
+// memo prevents re-renders when a sibling card's compare/favorite state changes
+const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite = true }) {
   const { compareSet, addToCompare, removeFromCompare, isInCompare } = useCompare()
   const { addFavorite, removeFavorite, isFavorite } = useFavorites()
 
@@ -163,4 +165,6 @@ export default function ToolCard({ tool, showCompare = true, showFavorite = true
       </div>
     </div>
   )
-}
+})
+
+export default ToolCard

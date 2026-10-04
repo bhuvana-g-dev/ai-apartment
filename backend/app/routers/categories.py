@@ -32,7 +32,6 @@ async def get_tools_for_category(category_id: str):
     cat = fetch_category_by_id(category_id)
     if not cat:
         raise HTTPException(status_code=404, detail=f"Category '{category_id}' not found")
-    tools, total = fetch_tools(filters={"category_id": category_id})
-    # sort alphabetically
-    tools.sort(key=lambda t: t.get("name", "").lower())
+    # fetch_tools already sorts alphabetically — no need to sort again
+    tools, total = fetch_tools(filters={"category_id": category_id}, limit=10_000, offset=0)
     return PaginatedResponse(data=tools, total=total, limit=total, offset=0)

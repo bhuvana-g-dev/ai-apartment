@@ -25,11 +25,14 @@ export default function CategoryDetailPage() {
   async function load() {
     setLoading(true); setError(null)
     try {
-      // Use direct endpoint — slug == category ID in our data
-      const cat = await getCategoryBySlug(categorySlug)
+      // Fetch category metadata and tools in parallel — slug == category ID in our data,
+      // so we don't need to wait for the category response before fetching tools.
+      const [cat, toolRes] = await Promise.all([
+        getCategoryBySlug(categorySlug),
+        getToolsByCategory(categorySlug),
+      ])
       if (!cat) { setError('Category not found.'); setLoading(false); return }
       setCategory(cat)
-      const toolRes = await getToolsByCategory(cat.id || cat.slug)
       const sorted = (toolRes.data || []).sort((a, b) => a.name.localeCompare(b.name))
       setTools(sorted)
     } catch (e) {
