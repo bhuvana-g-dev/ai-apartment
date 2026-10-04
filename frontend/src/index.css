@@ -75,19 +75,18 @@ html {
   box-shadow: 0 8px 25px -5px rgba(0,0,0,0.08), 0 4px 10px -3px rgba(0,0,0,0.05);
 }
 
-/* ── Glassmorphism base ───────────────────────────────────────── */
+/* ── Page background — soft lavender-to-white mesh like the reference ── */
 body {
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  /* Multi-colour mesh — indigo + violet + teal + warm — fixed so it never scrolls */
   background:
-    radial-gradient(ellipse 60% 50% at 10% 20%,  rgba(99,102,241,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 85% 10%,  rgba(168,85,247,0.14) 0%, transparent 55%),
-    radial-gradient(ellipse 55% 45% at 75% 85%,  rgba(20,184,166,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 35% at 5%  80%,  rgba(245,158,11,0.08) 0%, transparent 50%),
-    #f0f2ff;
+    radial-gradient(ellipse 70% 60% at 15% 0%,   rgba(139,92,246,0.18)  0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 85% 5%,   rgba(99,102,241,0.14)  0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 70% 90%,  rgba(168,85,247,0.10)  0%, transparent 50%),
+    radial-gradient(ellipse 40% 35% at 5%  85%,  rgba(59,130,246,0.08)  0%, transparent 45%),
+    #f5f3ff;
   background-attachment: fixed;
   min-height: 100vh;
   color: #0f172a;
@@ -139,3 +138,7 @@ body {
 .animate-fade-down  { animation: fade-down  0.5s ease-out both; }
 .animate-slide-up   { animation: slide-up   0.45s ease-out both; }
 .animate-stagger-in { animation: stagger-in 0.4s ease-out both; }
+
+/* ── Hide scrollbar (used in horizontal task strip) ─────────── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
