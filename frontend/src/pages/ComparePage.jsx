@@ -87,7 +87,7 @@ export default function ComparePage() {
 
   function handleRemove(id) {
     removeFromCompare(id)
-    if (compareSet.length - 1 < 2) navigate('/tools')
+    if (compareSet.length <= 2) navigate('/tools')
   }
 
   if (loading) return <LoadingSpinner label="Loading comparison..." />
@@ -135,8 +135,9 @@ export default function ComparePage() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
+      {/* Table — overflow-x-auto wraps outside rounded container so sticky cells work */}
+      <div className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full border-collapse min-w-[600px]">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50/80">
@@ -194,6 +195,7 @@ export default function ComparePage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Visit links */}

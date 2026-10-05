@@ -13,19 +13,17 @@ import { Sparkles, SlidersHorizontal } from 'lucide-react'
 
 const LIMIT = 20
 
-// Animated counter for the total stat
+/* Animated counter — runs once per value change */
 function AnimatedCount({ value }) {
   const [display, setDisplay] = useState(0)
   useEffect(() => {
     if (!value) return
-    const start = 0
     const duration = 600
-    const startTime = performance.now()
+    const start = performance.now()
     function step(now) {
-      const progress = Math.min((now - startTime) / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3) // ease-out cubic
-      setDisplay(Math.floor(eased * value))
-      if (progress < 1) requestAnimationFrame(step)
+      const p = Math.min((now - start) / duration, 1)
+      setDisplay(Math.floor((1 - Math.pow(1 - p, 3)) * value))
+      if (p < 1) requestAnimationFrame(step)
       else setDisplay(value)
     }
     requestAnimationFrame(step)
@@ -35,62 +33,42 @@ function AnimatedCount({ value }) {
 
 export default function CataloguePage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [tools, setTools] = useState([])
-  const [total, setTotal] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [tools,      setTools]      = useState([])
+  const [total,      setTotal]      = useState(0)
+  const [loading,    setLoading]    = useState(true)
+  const [error,      setError]      = useState(null)
   const [categories, setCategories] = useState([])
-  const [prevLoading, setPrevLoading] = useState(false)
-  const gridRef = useRef(null)
+  /* gridFading drives a CSS class rather than direct DOM manipulation */
+  const [gridFading, setGridFading] = useState(false)
 
   useEffect(() => {
-    getCategories()
-      .then(r => setCategories(r.data || []))
-      .catch(() => {})
+    getCategories().then(r => setCategories(r.data || [])).catch(() => {})
   }, [])
 
   useEffect(() => {
-    setPrevLoading(true)
     setLoading(true)
     setError(null)
-
-    // Fade out grid before loading
-    if (gridRef.current) {
-      gridRef.current.style.opacity = '0.4'
-      gridRef.current.style.transform = 'translateY(4px)'
-    }
+    setGridFading(true)   // fade out grid via class
 
     const params = { limit: LIMIT }
-    for (const [k, v] of searchParams.entries()) {
-      params[k] = v
-    }
+    for (const [k, v] of searchParams.entries()) params[k] = v
 
     getTools(params)
       .then(r => {
         setTools(r.data || [])
         setTotal(r.total || 0)
-        // Animate grid back in
-        setTimeout(() => {
-          if (gridRef.current) {
-            gridRef.current.style.transition = 'opacity 0.3s ease, transform 0.3s ease'
-            gridRef.current.style.opacity = '1'
-            gridRef.current.style.transform = 'translateY(0)'
-          }
-        }, 50)
+        // short delay so the fade-out is visible before new content appears
+        setTimeout(() => setGridFading(false), 80)
       })
-      .catch(e => setError(e.message || 'Failed to load tools.'))
-      .finally(() => { setLoading(false); setPrevLoading(false) })
-  }, [searchParams.toString()])
+      .catch(e => { setError(e.message || 'Failed to load tools.'); setGridFading(false) })
+      .finally(() => setLoading(false))
+  }, [searchParams.toString()])  // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleFilterChange(key, value) {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev)
       next.delete('offset')
-      if (value === null || value === '' || value === undefined) {
-        next.delete(key)
-      } else {
-        next.set(key, String(value))
-      }
+      value == null || value === '' ? next.delete(key) : next.set(key, String(value))
       return next
     })
   }
@@ -103,12 +81,11 @@ export default function CataloguePage() {
       next.set('offset', String(newOffset))
       return next
     })
-    // Scroll to top of grid smoothly
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const filters = Object.fromEntries(searchParams.entries())
-  const offset = parseInt(filters.offset || '0', 10)
+  const filters     = Object.fromEntries(searchParams.entries())
+  const offset      = parseInt(filters.offset || '0', 10)
   const activeCount = Object.entries(filters).filter(([k, v]) => !['offset', 'limit'].includes(k) && v).length
 
   return (
@@ -121,7 +98,7 @@ export default function CataloguePage() {
             <h1 className="text-3xl font-black text-gray-900 tracking-tight">All AI Tools</h1>
             {total > 0 && (
               <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold animate-scale-in">
-                <Sparkles size={12} />
+                <Sparkles size={12} aria-hidden="true" />
                 <AnimatedCount value={total} />
               </span>
             )}
@@ -129,14 +106,13 @@ export default function CataloguePage() {
           <p className="text-sm text-gray-400">
             {activeCount > 0
               ? `${activeCount} filter${activeCount > 1 ? 's' : ''} active — ${total} result${total !== 1 ? 's' : ''}`
-              : 'Discover and compare AI tools across every category'
-            }
+              : 'Discover and compare AI tools across every category'}
           </p>
         </div>
       </div>
 
       <div className="flex gap-5 items-start">
-        {/* Sidebar — slides in from left */}
+        {/* Filter sidebar */}
         <div className="shrink-0 animate-slide-up" style={{ animationDelay: '0.1s' }}>
           <FilterPanel
             filters={filters}
@@ -147,10 +123,9 @@ export default function CataloguePage() {
           />
         </div>
 
-        {/* Tool grid */}
+        {/* Grid */}
         <div className="flex-1 min-w-0 space-y-5">
 
-          {/* Loading skeletons */}
           {loading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -169,15 +144,13 @@ export default function CataloguePage() {
 
           {!loading && !error && tools.length === 0 && (
             <div className="animate-fade-up">
-              <EmptyState
-                message="No tools match the selected filters."
-                cta={{ label: 'Clear all filters', to: '/tools' }}
-              />
+              <EmptyState message="No tools match the selected filters." cta={{ label: 'Clear all filters', to: '/tools' }} />
             </div>
           )}
 
           {!loading && !error && tools.length > 0 && (
-            <div ref={gridRef} style={{ transition: 'opacity 0.3s ease, transform 0.3s ease' }}>
+            /* CSS class transition — no direct DOM style manipulation */
+            <div className={`transition-[opacity,transform] duration-200 ${gridFading ? 'opacity-40 translate-y-1' : 'opacity-100 translate-y-0'}`}>
               {/* Stat bar */}
               <div className="flex items-center justify-between mb-3 animate-fade-in">
                 <p className="text-xs text-gray-400 font-medium">
@@ -186,33 +159,22 @@ export default function CataloguePage() {
                 </p>
                 {activeCount > 0 && (
                   <span className="flex items-center gap-1 text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full border border-indigo-100">
-                    <SlidersHorizontal size={10} />
+                    <SlidersHorizontal size={10} aria-hidden="true" />
                     {activeCount} filter{activeCount > 1 ? 's' : ''} active
                   </span>
                 )}
               </div>
 
-              {/* Tool grid — cards stagger in */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {tools.map((tool, i) => (
-                  <div
-                    key={tool.id}
-                    className="animate-slide-up"
-                    style={{ animationDelay: `${Math.min(i, 8) * 0.05}s` }}
-                  >
-                    <ToolCard tool={{ ...tool, _index: i }} />
+                  <div key={tool.id} className="animate-slide-up" style={{ animationDelay: `${Math.min(i, 8) * 0.05}s` }}>
+                    <ToolCard tool={tool} index={i} />
                   </div>
                 ))}
               </div>
 
-              {/* Pagination with top margin */}
-              <div className="animate-fade-up" style={{ animationDelay: '0.3s' }}>
-                <Pagination
-                  total={total}
-                  limit={LIMIT}
-                  offset={offset}
-                  onChange={handlePageChange}
-                />
+              <div className="animate-fade-up" style={{ animationDelay: '0.25s' }}>
+                <Pagination total={total} limit={LIMIT} offset={offset} onChange={handlePageChange} />
               </div>
             </div>
           )}

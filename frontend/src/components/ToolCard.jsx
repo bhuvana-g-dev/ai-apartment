@@ -5,8 +5,7 @@ import { useCompare } from '../context/CompareContext.jsx'
 import { useFavorites } from '../hooks/useFavorites.js'
 import CategoryIcon from './CategoryIcon.jsx'
 
-// Top accent stripe color per category
-const ACCENT_COLORS = {
+const ACCENT = {
   'chat-ai':          'from-blue-400 to-blue-500',
   'writing-ai':       'from-violet-400 to-violet-500',
   'research-ai':      'from-cyan-400 to-cyan-500',
@@ -40,17 +39,29 @@ const ICON_BG = {
   'ai-api-providers': 'bg-emerald-50 text-emerald-600',
 }
 
-// memo prevents re-renders when a sibling card's compare/favorite state changes
-const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite = true }) {
+/**
+ * ToolCard — memo-wrapped so sibling compare/favorite state changes
+ * don't re-render unrelated cards.
+ *
+ * Props:
+ *   tool        — tool data object
+ *   index       — numeric position in current list (replaces tool._index)
+ *   showCompare — bool (default true)
+ *   showFavorite— bool (default true)
+ */
+const ToolCard = memo(function ToolCard({ tool, index, showCompare = true, showFavorite = true }) {
   const { compareSet, addToCompare, removeFromCompare, isInCompare } = useCompare()
   const { addFavorite, removeFavorite, isFavorite } = useFavorites()
 
-  const inCompare = isInCompare(tool.id)
+  const inCompare      = isInCompare(tool.id)
   const compareDisabled = compareSet.length >= 4
-  const favd = isFavorite(tool.id)
-  const staggerClass = tool._index !== undefined ? `stagger-${Math.min((tool._index || 0) + 1, 8)}` : ''
-  const accent = ACCENT_COLORS[tool.category_id] || 'from-indigo-400 to-indigo-500'
-  const iconBg = ICON_BG[tool.category_id] || 'bg-indigo-50 text-indigo-600'
+  const favd           = isFavorite(tool.id)
+
+  // Use explicit index prop; fall back to tool._index for backward compat
+  const idx        = index ?? tool._index
+  const staggerCls = idx != null ? `stagger-${Math.min(idx + 1, 8)}` : ''
+  const accent     = ACCENT[tool.category_id]   || 'from-indigo-400 to-indigo-500'
+  const iconBg     = ICON_BG[tool.category_id]  || 'bg-indigo-50 text-indigo-600'
 
   function handleCompareToggle(e) {
     e.preventDefault()
@@ -66,23 +77,21 @@ const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite
 
   return (
     <div
-      className={`bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl overflow-hidden flex flex-col shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group animate-slide-up ${staggerClass}`}
-      style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)' }}
+      className={`bg-white/80 backdrop-blur-sm border border-white/60 rounded-2xl overflow-hidden flex flex-col shadow-sm hover:shadow-lg hover:-translate-y-1 transition-[transform,box-shadow,opacity] duration-200 group animate-slide-up ${staggerCls}`}
     >
-      {/* Gradient accent top stripe */}
+      {/* Category accent stripe */}
       <div className={`h-1 w-full bg-gradient-to-r ${accent}`} />
 
-      {/* Card header */}
+      {/* Header */}
       <div className="p-4 pb-3 flex items-start gap-3">
-        {/* Category icon */}
-        <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shrink-0 transition-transform group-hover:scale-110`}>
-          <CategoryIcon slug={tool.category_id} size={18} />
+        <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-110`}>
+          <CategoryIcon slug={tool.category_id} size={18} aria-hidden="true" />
         </div>
 
         <div className="flex-1 min-w-0">
           <Link
             to={`/tools/${tool.id}`}
-            className="font-bold text-gray-900 group-hover:text-indigo-700 transition-colors line-clamp-1 block text-sm"
+            className="font-bold text-gray-900 group-hover:text-indigo-700 transition-colors duration-150 line-clamp-1 block text-sm"
           >
             {tool.name}
           </Link>
@@ -94,17 +103,13 @@ const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite
         {showFavorite && (
           <button
             onClick={handleFavoriteToggle}
-            className="shrink-0 transition-transform hover:scale-125 focus:outline-none"
-            title={favd ? 'Remove from favorites' : 'Save'}
+            aria-label={favd ? `Remove ${tool.name} from favorites` : `Save ${tool.name} to favorites`}
+            className="shrink-0 transition-transform duration-150 hover:scale-125 focus:outline-none"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill={favd ? 'currentColor' : 'none'}
-              stroke="currentColor"
-              strokeWidth="2"
-              className={`w-4 h-4 ${favd ? 'text-red-500' : 'text-gray-300 hover:text-red-400'}`}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            <svg viewBox="0 0 24 24" fill={favd ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"
+              className={`w-4 h-4 ${favd ? 'text-red-500' : 'text-gray-300 hover:text-red-400'}`}>
+              <path strokeLinecap="round" strokeLinejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
             </svg>
           </button>
         )}
@@ -119,7 +124,7 @@ const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite
       {tool.free_availability && (
         <div className="px-4 pb-2">
           <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-100 font-medium">
-            <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 shrink-0">
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 shrink-0" aria-hidden="true">
               <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
             </svg>
             Free tier available
@@ -127,7 +132,7 @@ const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite
         </div>
       )}
 
-      {/* Pricing + extra badges */}
+      {/* Pricing + badges */}
       <div className="px-4 pb-3 flex flex-wrap gap-1.5">
         <PricingBadge pricingType={tool.pricing_type} />
         {tool.api_available && (
@@ -142,7 +147,7 @@ const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite
       <div className="mt-auto px-4 pb-4 pt-1 flex gap-2 border-t border-gray-50">
         <Link
           to={`/tools/${tool.id}`}
-          className="flex-1 text-center py-1.5 text-xs font-semibold text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+          className="flex-1 text-center py-1.5 text-xs font-semibold text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors duration-150"
         >
           View Details →
         </Link>
@@ -150,8 +155,9 @@ const ToolCard = memo(function ToolCard({ tool, showCompare = true, showFavorite
           <button
             onClick={handleCompareToggle}
             disabled={compareDisabled && !inCompare}
+            aria-label={inCompare ? `Remove ${tool.name} from comparison` : `Add ${tool.name} to comparison`}
             title={compareDisabled && !inCompare ? 'Max 4 tools' : inCompare ? 'Remove from compare' : 'Add to compare'}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-[background-color,border-color,color] duration-150 ${
               inCompare
                 ? 'bg-indigo-600 text-white border-indigo-600 hover:bg-red-500 hover:border-red-500'
                 : compareDisabled
