@@ -1,6 +1,7 @@
 """Firestore access layer for the tools collection. No business logic here."""
 
 import time
+from google.cloud.firestore_v1.base_query import FieldFilter
 from app.db.firestore_client import get_db
 
 # ---------------------------------------------------------------------------
@@ -38,7 +39,7 @@ def _load_all_active_tools() -> list[dict]:
     db = get_db()
     docs = (
         db.collection("tools")
-        .where("active", "==", True)
+        .where(filter=FieldFilter("active", "==", True))
         .stream()
     )
     result = []
