@@ -128,3 +128,23 @@ def rank_search_results(tools: list[dict], query: str) -> list[dict]:
 
     scored.sort(key=lambda x: x[0], reverse=True)
     return [t for _, t in scored[:50]]
+
+
+def compute_stats(tools: list[dict]) -> dict:
+    """
+    Catalogue-wide counts for the homepage, computed over ACTIVE tools only.
+    Pure function — no Firestore access — so it can be property-tested.
+    """
+    active = [t for t in tools if t.get("active") is True]
+    by_pricing = {p: 0 for p in ("Completely Free", "Freemium", "Free Trial", "Paid Only")}
+    for t in active:
+        p = t.get("pricing_type")
+        if p in by_pricing:
+            by_pricing[p] += 1
+    return {
+        "total": len(active),
+        "free_tier": sum(1 for t in active if t.get("free_availability") is True),
+        "api_available": sum(1 for t in active if t.get("api_available") is True),
+        "categories": len({t.get("category_id") for t in active if t.get("category_id")}),
+        "by_pricing": by_pricing,
+    }

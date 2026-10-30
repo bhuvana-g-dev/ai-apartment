@@ -182,13 +182,18 @@ TOOLS = [
          limitations=["avatar videos can feel stiff", "free minutes are very limited"]),
 
     tool(id="google-veo", name="Google Veo", category_id="video-generation",
-         description="Google DeepMind's video generation model, available through the Gemini app, Flow and the Gemini API. Generates clips with native audio.",
-         website_url="https://deepmind.google/models/veo/", pricing_type="Paid Only", free_availability=False,
+         description="Google DeepMind's video generation model, available through Google Flow, the Gemini app and the Gemini API. Generates short clips with native audio.",
+         website_url="https://deepmind.google/models/veo/", pricing_type="Freemium", free_availability=True,
+         free_tier_details=ftd(daily="Google Flow gives every account free daily credits that can be spent on Veo clips",
+                               watermark=True, watermark_details="Outputs carry Google's SynthID invisible watermark",
+                               features="Veo in the Gemini app needs a paid Google AI plan. " + CHECK,
+                               api="Gemini API is billed per second of generated video, from about $0.05/second on the Lite tier",
+                               commercial=None),
          capabilities=["text-to-video", "image-to-video", "native audio", "camera control"],
          input_types=["text", "image"], output_types=["video"], api_available=True,
          watermark_info="Outputs include Google's SynthID invisible watermark; consumer apps may also add a visible mark.",
          best_use_cases=["cinematic short clips", "ad concepts", "storyboarding"],
-         limitations=["requires a paid Google AI plan or API billing", "short clip lengths"]),
+         limitations=["free use is limited to Flow's daily credits", "Gemini app access needs a paid plan", "short clip lengths"]),
 
     tool(id="capcut", name="CapCut", category_id="video-generation",
          description="Video editor from ByteDance with AI features like auto-captions, background removal, script-to-video and effects. Desktop, web and mobile.",
@@ -253,7 +258,8 @@ TOOLS = [
          capabilities=["agentic coding", "codebase understanding", "terminal commands", "git workflows"],
          input_types=["text", "code"], output_types=["code", "text"], api_available=True,
          best_use_cases=["large refactors", "terminal-first developers", "automating repo tasks"],
-         limitations=["needs a paid Claude plan or API billing", "usage can get costly on big tasks"]),
+         limitations=["not included in the free Claude plan; starts with Claude Pro at $20/month, or pay-per-token via the API",
+                      "shares the same usage limits as Claude chat", "usage can get costly on big tasks"]),
 
     tool(id="amazon-q-developer", name="Amazon Q Developer", category_id="coding-ai",
          description="AWS's AI coding assistant for IDEs and the CLI. Code suggestions, chat, security scans and help with AWS services.",
@@ -297,7 +303,8 @@ TOOLS = [
     tool(id="clickup-brain", name="ClickUp Brain", category_id="productivity-ai",
          description="AI assistant inside ClickUp that writes docs, summarises tasks and threads, and answers questions across a workspace.",
          website_url="https://clickup.com/ai", pricing_type="Free Trial", free_availability=True,
-         free_tier_details=ftd(features="Limited trial uses; ongoing use is a paid add-on to ClickUp plans. " + CHECK),
+         free_tier_details=ftd(gen_limit="Limited one-time trial uses per workspace",
+                               features="After the trial, Brain is an add-on (from $9/user/month) on paid ClickUp plans; Free Forever workspaces must upgrade. " + CHECK),
          capabilities=["task summaries", "doc writing", "workspace Q&A", "standup updates"],
          input_types=["text"], output_types=["text"], api_available=False,
          best_use_cases=["project status summaries", "teams already on ClickUp"],
@@ -335,11 +342,12 @@ TOOLS = [
 
     tool(id="devin", name="Devin", category_id="ai-agents",
          description="Autonomous software engineering agent from Cognition that takes tickets, writes code in its own environment and opens pull requests.",
-         website_url="https://devin.ai", pricing_type="Paid Only", free_availability=False,
+         website_url="https://devin.ai", pricing_type="Freemium", free_availability=True,
+         free_tier_details=ftd(features="Free plan has a light agent quota and limited models; Pro is $20/month and Max $200/month with larger quotas. " + CHECK),
          capabilities=["autonomous coding", "pull request creation", "bug fixing", "codebase migration"],
          input_types=["text", "code"], output_types=["code", "text"], api_available=True,
          best_use_cases=["clearing backlog tickets", "migrations", "parallel engineering tasks"],
-         limitations=["usage-based pricing adds up", "complex tasks still need engineer review"]),
+         limitations=["free quota is small", "heavy usage costs extra beyond plan quota", "complex tasks still need engineer review"]),
 ]
 
 

@@ -233,3 +233,24 @@ def test_search_result_count_upper_bound(tools, query):
     assume(query.strip())
     results = rank_search_results(tools, query)
     assert len(results) <= 50, f"search returned {len(results)} results, expected ≤ 50"
+
+
+# ---------------------------------------------------------------------------
+# Property 14: Homepage stats are consistent with the catalogue
+# ---------------------------------------------------------------------------
+@settings(max_examples=100)
+@given(tools=catalogue_strategy)
+def test_stats_consistent_with_catalogue(tools):
+    """
+    compute_stats counts only active tools; the free-tier count never exceeds
+    the total, and pricing buckets add up to the total.
+    """
+    from app.services.tools_service import compute_stats
+
+    stats = compute_stats(tools)
+    active = [t for t in tools if t["active"] is True]
+
+    assert stats["total"] == len(active)
+    assert stats["free_tier"] == sum(1 for t in active if t["free_availability"])
+    assert 0 <= stats["free_tier"] <= stats["total"]
+    assert sum(stats["by_pricing"].values()) == stats["total"]

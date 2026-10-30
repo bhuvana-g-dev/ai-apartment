@@ -7,6 +7,7 @@ from fastapi.security.api_key import APIKeyHeader
 from app.db.tools_db import fetch_tools, fetch_tool_by_id, write_tool, update_tool
 from app.models.tool import ToolRecord, ToolCreate, ToolUpdate, PRICING_TYPES
 from app.models.responses import PaginatedResponse
+from app.services.tools_service import compute_stats
 from uuid import uuid4
 
 router = APIRouter(prefix="/tools", tags=["tools"])
@@ -59,6 +60,14 @@ async def list_tools(
     filters = {k: v for k, v in filters.items() if v is not None}
     tools, total = fetch_tools(filters=filters, limit=limit, offset=offset)
     return PaginatedResponse(data=tools, total=total, limit=limit, offset=offset)
+
+
+@router.get("/stats")
+async def tool_stats():
+    """Catalogue-wide counts (served from the 60s in-memory cache).
+    Declared before /{tool_id} so 'stats' isn't treated as a tool ID."""
+    tools, _ = fetch_tools(limit=10_000, offset=0)
+    return compute_stats(tools)
 
 
 @router.get("/{tool_id}", response_model=ToolRecord)

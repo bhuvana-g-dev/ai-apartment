@@ -10,6 +10,12 @@ export async function getTools(params = {}) {
   return response.data
 }
 
+/** Catalogue-wide counts: { total, free_tier, api_available, categories, by_pricing } */
+export async function getToolStats() {
+  const response = await api.get('/tools/stats')
+  return response.data
+}
+
 export async function getToolById(toolId) {
   const response = await api.get(`/tools/${toolId}`)
   return response.data

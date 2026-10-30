@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { getCategories } from '../services/categoriesService.js'
-import { getTools } from '../services/toolsService.js'
+import { getTools, getToolStats } from '../services/toolsService.js'
 import ToolCard from '../components/ToolCard.jsx'
 import CategoryCard from '../components/CategoryCard.jsx'
 import SearchBar from '../components/SearchBar.jsx'
@@ -31,24 +31,28 @@ export default function HomePage() {
   const navigate = useNavigate()
   const [categories, setCategories] = useState([])
   const [tools, setTools]           = useState([])
-  const [stats, setStats]           = useState({ total: null, freeCount: null })
+  const [stats, setStats]           = useState({ total: null, freeCount: null, categories: null })
   const [loading, setLoading]       = useState(true)
   const [error, setError]           = useState(null)
 
   async function load() {
     setLoading(true); setError(null)
     try {
-      const [catRes, toolRes] = await Promise.all([
+      const [catRes, toolRes, statRes] = await Promise.all([
         getCategories(),
         getTools({ limit: 8 }),
+        // Stats are non-critical: if this call fails the page still renders
+        getToolStats().catch(() => null),
       ])
       const cats     = catRes.data  || []
       const toolList = toolRes.data || []
       setCategories(cats)
       setTools(toolList.slice(0, 8))
+      // Catalogue-wide counts from /tools/stats; total falls back to the list response
       setStats({
-        total:     toolRes.total || toolList.length,
-        freeCount: toolList.filter(t => t.free_availability).length,
+        total:      statRes?.total ?? toolRes.total ?? null,
+        freeCount:  statRes?.free_tier ?? null,
+        categories: statRes?.categories ?? null,
       })
     } catch {
       setError('Could not connect. Please try again.')
@@ -155,9 +159,10 @@ export default function HomePage() {
         <div className="relative z-10 mx-7 mb-7 sm:mx-12 sm:mb-8">
           <div className="bg-white/80 backdrop-blur-sm border border-white/90 rounded-2xl shadow-sm px-6 py-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { icon: Boxes,   iconCl: 'bg-violet-100 text-violet-600', v: stats.total     ? `${stats.total}+`          : '90+', l: 'AI Tools'      },
-              { icon: Layers,  iconCl: 'bg-amber-100  text-amber-600',  v: categories.length > 0 ? `${categories.length}` : '14', l: 'Categories'    },
-              { icon: Zap,     iconCl: 'bg-emerald-100 text-emerald-600', v: stats.freeCount ? `${stats.freeCount}+`    : '60+', l: 'With Free Tier' },
+              /* Real counts only — show "—" rather than an invented number */
+              { icon: Boxes,   iconCl: 'bg-violet-100 text-violet-600',   v: stats.total ?? '—',                                     l: 'AI Tools'      },
+              { icon: Layers,  iconCl: 'bg-amber-100  text-amber-600',    v: categories.length > 0 ? categories.length : '—',        l: 'Categories'    },
+              { icon: Zap,     iconCl: 'bg-emerald-100 text-emerald-600', v: stats.freeCount ?? '—',                                 l: 'With Free Tier' },
               { icon: Tag,     iconCl: 'bg-indigo-100 text-indigo-600', v: '4',                                                   l: 'Pricing Labels' },
             ].map(({ icon: Icon, iconCl, v, l }) => (
               <div key={l} className="flex items-center gap-3">
@@ -231,7 +236,7 @@ export default function HomePage() {
           <SectionHeader
             title="Popular AI Tools"
             sub="Across the most-used categories"
-            link={{ to: '/tools', label: `All ${stats.total ? stats.total + '+' : ''} tools` }}
+            link={{ to: '/tools', label: stats.total ? `All ${stats.total} tools` : 'All tools' }}
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             {tools.map((tool, i) => <ToolCard key={tool.id} tool={{ ...tool, _index: i }} />)}
